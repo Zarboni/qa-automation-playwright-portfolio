@@ -74,16 +74,27 @@ class TodoPage extends BasePage {
   }
 
   /**
-   * Edit a todo item inline by double-clicking and typing new text
+   * Edit a todo item inline by double-clicking its label, typing new text, and saving with Enter
    * @param {string} originalText - The current text of the todo
    * @param {string} newText - The new text to replace it with
    */
   async editTodo(originalText, newText) {
     const item = this.page.getByTestId('todo-item').filter({ hasText: originalText });
-    await item.getByRole('textbox', { name: 'Edit' }).dblclick();
-    const editInput = this.page.getByRole('textbox', { name: 'Edit' });
+    // Double-click the label to trigger inline edit mode — the edit input is hidden until then
+    await item.locator('label').dblclick();
+    const editInput = item.getByRole('textbox', { name: 'Edit' });
     await editInput.fill(newText);
     await editInput.press('Enter');
+  }
+
+  /**
+   * Enter edit mode on a todo item, then press Escape to cancel without saving
+   * @param {string} originalText - The text of the todo to enter edit mode on
+   */
+  async cancelEditTodo(originalText) {
+    const item = this.page.getByTestId('todo-item').filter({ hasText: originalText });
+    await item.locator('label').dblclick();
+    await item.getByRole('textbox', { name: 'Edit' }).press('Escape');
   }
 
   /**
