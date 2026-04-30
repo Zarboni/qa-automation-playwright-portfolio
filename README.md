@@ -44,6 +44,10 @@ qa-automation-playwright-portfolio/
 
 ---
 
+## Test Report Preview
+
+![Playwright Report Screenshot](assets/playwright-report-screenshot.png)
+
 ## Getting started
 
 ### Prerequisites
